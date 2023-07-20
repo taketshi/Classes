@@ -4,17 +4,19 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 
-class NN:
+class NN(nn.Module):
     
     def __init__(self, layer_sizes, activation_functions = None):
 
+        super(NN,self).__init__()
+        
         # Initialize Variables
         self.layer_sizes = layer_sizes
         self.activation_functions = activation_functions
         self.depth = len(self.layer_sizes)
 
         if self.activation_functions == None: 
-            self.activation_functions = ['sigmoid'] * (self.n_layers - 1)
+            self.activation_functions = [None] * (self.depth - 1)
         
         # Create model
         layers = []
@@ -26,10 +28,10 @@ class NN:
                 elif self.activation_functions[i] == 'relu':
                     layers.append(nn.ReLU())
         # Final model
-        print(layers)
         self.model = nn.Sequential(*layers)
 
-    def forward_pass(self, input):
+
+    def forward(self, input):
         return self.model(input)
 
     # ONLY for LogReg
